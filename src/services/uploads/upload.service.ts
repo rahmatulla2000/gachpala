@@ -41,6 +41,10 @@ export function validateImage(file: File | { type: string; size: number }): {
   return { valid: true };
 }
 
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'hprovw7y';
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '544122491331264';
+const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || 'yOGlTmDtnKB7HBBEn1BT0zp-OLM';
+
 /**
  * Upload image to Cloudinary
  */
@@ -51,9 +55,9 @@ async function uploadToCloudinary(
   const cloudinary = (await import('cloudinary')).v2;
 
   cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
   });
 
   return new Promise((resolve, reject) => {
@@ -115,9 +119,16 @@ export async function uploadImage(
 
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  // Use Cloudinary if configured, otherwise fall back to local
-  if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY) {
-    return uploadToCloudinary(buffer, folder);
+  // In production / serverless, always use Cloudinary cloud storage
+  if (CLOUDINARY_CLOUD_NAME && CLOUDINARY_API_KEY) {
+    try {
+      return await uploadToCloudinary(buffer, folder);
+    } catch (cloudErr) {
+      console.error('Cloudinary upload error:', cloudErr);
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error(`Cloud image upload failed: ${(cloudErr as Error).message}`);
+      }
+    }
   }
 
   return uploadToLocal(buffer, file.name, folder);
