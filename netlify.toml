@@ -4,3 +4,22 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  DATABASE_URL = "postgresql://neondb_owner:npg_tM8TocrADJ1C@ep-dawn-cake-b3wxoilg-pooler.c-4.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+  AUTH_SECRET = "knows-about-tree-secret-key-2024-dev"
+  CLOUDINARY_CLOUD_NAME = "hprovw7y"
+  CLOUDINARY_API_KEY = "544122491331264"
+  CLOUDINARY_API_SECRET = "yOGlTmDtnKB7HBBEn1BT0zp-OLM"
+  UPLOAD_PROVIDER = "cloudinary"
+  AI_PROVIDER = "custom"
+  CUSTOM_AI_URL = "https://rahmot2000-fruit-tree-ai-api.hf.space/predict"
+
+[context.production.environment]
+  NODE_VERSION = "20"
+  DATABASE_URL = "postgresql://neondb_owner:npg_tM8TocrADJ1C@ep-dawn-cake-b3wxoilg-pooler.c-4.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+  AUTH_SECRET = "knows-about-tree-secret-key-2024-dev"
+  CLOUDINARY_CLOUD_NAME = "hprovw7y"
+  CLOUDINARY_API_KEY = "544122491331264"
+  CLOUDINARY_API_SECRET = "yOGlTmDtnKB7HBBEn1BT0zp-OLM"
+  UPLOAD_PROVIDER = "cloudinary"
+  AI_PROVIDER = "custom"
+  CUSTOM_AI_URL = "https://rahmot2000-fruit-tree-ai-api.hf.space/predict"
