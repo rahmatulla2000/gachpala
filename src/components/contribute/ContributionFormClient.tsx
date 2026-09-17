@@ -11,7 +11,7 @@ import Image from 'next/image';
 type FormSection = 'basic' | 'taxonomy' | 'details' | 'benefits' | 'fruit' | 'flower' | 'images' | 'contributor';
 
 export function ContributionFormClient() {
-  const [openSections, setOpenSections] = useState<Set<FormSection>>(new Set<FormSection>(['basic', 'details']));
+  const [openSections, setOpenSections] = useState<Set<FormSection>>(new Set<FormSection>(['basic', 'details', 'images']));
   const [formData, setFormData] = useState<Record<string, string>>({
     banglaName: '', englishName: '', commonName: '', scientificName: '',
     kingdom: 'Plantae', phylum: '', taxClass: '', order: '', family: '', genus: '', species: '',
