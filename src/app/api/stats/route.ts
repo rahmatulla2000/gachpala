@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getPublicStats } from '@/services/stats/stats.service';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const stats = await getPublicStats();
