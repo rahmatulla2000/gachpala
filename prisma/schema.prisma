@@ -1,0 +1,378 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ──────────────────────────────────────────────
+// ADMIN
+// ──────────────────────────────────────────────
+
+model Admin {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admins")
+}
+
+// ──────────────────────────────────────────────
+// TREE
+// ──────────────────────────────────────────────
+
+model Tree {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+
+  // Names
+  banglaName      String
+  englishName     String
+  commonName      String?
+  scientificName  String
+
+  // Taxonomy
+  kingdom         String?  @default("Plantae")
+  phylum          String?
+  taxClass        String?  // 'class' is reserved in TS
+  order           String?
+  family          String?
+  genus           String?
+  species         String?
+
+  // Descriptions
+  description     String?  @db.Text
+  characteristics String?  @db.Text
+  habitat         String?  @db.Text
+  distribution    String?  @db.Text
+
+  // Physical
+  height          String?
+  lifespan        String?
+  bark            String?  @db.Text
+  leaves          String?  @db.Text
+
+  // Benefits & Uses
+  benefits        String?  @db.Text
+  uses            String?  @db.Text
+  environmentalImportance String? @db.Text
+  culturalImportance      String? @db.Text
+
+  // Fruit Info (JSON for structured optional data)
+  fruitInfo       Json?
+  // { name, description, taste, season, uses, nutrition, images[] }
+
+  // Flower Info (JSON for structured optional data)
+  flowerInfo      Json?
+  // { name, color, season, description, images[] }
+
+  // Sources
+  sources         String?  @db.Text
+
+  // Flags
+  featured        Boolean  @default(false)
+  published       Boolean  @default(false)
+  hasFruit        Boolean  @default(false)
+  hasFlower       Boolean  @default(false)
+  isNative        Boolean  @default(false)
+  hasMedicinalUse Boolean  @default(false)
+
+  // Authorship (stored as name strings for simplicity)
+  createdByName   String?  // Admin name who first created this tree
+  updatedByName   String?  // Admin name who last updated this tree
+
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  images          TreeImage[]
+  varieties       Variety[]
+  categories      TreeCategory[]
+  feedbacks       TreeFeedback[]
+  auditLogs       TreeAuditLog[]
+
+  @@index([scientificName])
+  @@index([englishName])
+  @@index([banglaName])
+  @@index([family])
+  @@index([genus])
+  @@index([species])
+  @@index([slug])
+  @@index([published, featured])
+  @@index([published, createdAt])
+  @@map("trees")
+}
+
+// ──────────────────────────────────────────────
+// TREE IMAGE
+// ──────────────────────────────────────────────
+
+model TreeImage {
+  id               String   @id @default(cuid())
+  treeId           String
+  url              String
+  type             String   @default("full_tree")
+  // Types: full_tree, leaf, flower, fruit, bark, seed, branch, variety
+  altText          String?
+  caption          String?  // Optional public-facing caption/description
+  uploadedByName   String?  // Admin name who uploaded this image
+  isPrimary        Boolean  @default(false)
+  sortOrder        Int      @default(0)
+  createdAt        DateTime @default(now())
+
+  tree             Tree     @relation(fields: [treeId], references: [id], onDelete: Cascade)
+
+  @@index([treeId])
+  @@map("tree_images")
+}
+
+// ──────────────────────────────────────────────
+// VARIETY
+// ──────────────────────────────────────────────
+
+model Variety {
+  id              String   @id @default(cuid())
+  treeId          String
+  name            String
+  banglaName      String?
+  description     String?  @db.Text
+  characteristics String?  @db.Text
+  origin          String?
+  region          String?
+  season          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  tree            Tree     @relation(fields: [treeId], references: [id], onDelete: Cascade)
+  images          VarietyImage[]
+
+  @@index([treeId])
+  @@map("varieties")
+}
+
+// ──────────────────────────────────────────────
+// VARIETY IMAGE
+// ──────────────────────────────────────────────
+
+model VarietyImage {
+  id        String  @id @default(cuid())
+  varietyId String
+  url       String
+  altText   String?
+
+  variety   Variety @relation(fields: [varietyId], references: [id], onDelete: Cascade)
+
+  @@index([varietyId])
+  @@map("variety_images")
+}
+
+// ──────────────────────────────────────────────
+// CATEGORY
+// ──────────────────────────────────────────────
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  image       String?
+  icon        String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  trees       TreeCategory[]
+
+  @@map("categories")
+}
+
+// ──────────────────────────────────────────────
+// TREE ↔ CATEGORY (Many-to-Many)
+// ──────────────────────────────────────────────
+
+model TreeCategory {
+  treeId     String
+  categoryId String
+
+  tree       Tree     @relation(fields: [treeId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([treeId, categoryId])
+  @@index([categoryId])
+  @@map("tree_categories")
+}
+
+// ──────────────────────────────────────────────
+// SUBMISSION (Public Contribution)
+// ──────────────────────────────────────────────
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Submission {
+  id              String           @id @default(cuid())
+
+  // Names
+  banglaName      String
+  englishName     String
+  commonName      String?
+  scientificName  String?
+
+  // Taxonomy
+  kingdom         String?
+  phylum          String?
+  taxClass        String?
+  order           String?
+  family          String?
+  genus           String?
+  species         String?
+
+  // Details
+  description     String?          @db.Text
+  characteristics String?          @db.Text
+  habitat         String?          @db.Text
+  distribution    String?          @db.Text
+  height          String?
+  lifespan        String?
+
+  // Benefits & Uses
+  benefits        String?          @db.Text
+  uses            String?          @db.Text
+
+  // Fruit & Flower (JSON)
+  fruitInfo       Json?
+  flowerInfo      Json?
+
+  // Contributor
+  contributorName  String?
+  contributorEmail String?
+
+  // Metadata
+  source          String?          @db.Text
+  additionalNote  String?          @db.Text
+
+  // Status
+  status          SubmissionStatus @default(PENDING)
+  reviewedAt      DateTime?
+  reviewedBy      String?
+  reviewNote      String?          @db.Text
+
+  // Timestamps
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  images          SubmissionImage[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("submissions")
+}
+
+// ──────────────────────────────────────────────
+// SUBMISSION IMAGE
+// ──────────────────────────────────────────────
+
+model SubmissionImage {
+  id           String     @id @default(cuid())
+  submissionId String
+  url          String
+  type         String     @default("full_tree")
+  altText      String?
+
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+  @@map("submission_images")
+}
+
+// ──────────────────────────────────────────────
+// TREE FEEDBACK / CORRECTION
+// ──────────────────────────────────────────────
+
+enum FeedbackStatus {
+  PENDING
+  REVIEWED
+  ACTION_TAKEN
+  REJECTED
+}
+
+model TreeFeedback {
+  id                String         @id @default(cuid())
+  treeId            String
+
+  // Issue details
+  issueType         String         // e.g. "incorrect_info", "missing_info", "wrong_image", "other"
+  description       String         @db.Text
+  evidenceImageUrl  String?        // Optional uploaded evidence image
+
+  // Submitter (anonymous OK)
+  submitterName     String?
+  submitterEmail    String?
+
+  // Admin review
+  status            FeedbackStatus @default(PENDING)
+  adminNote         String?        @db.Text
+  reviewedByName    String?
+  reviewedAt        DateTime?
+
+  // Timestamps
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  tree              Tree           @relation(fields: [treeId], references: [id], onDelete: Cascade)
+
+  @@index([treeId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("tree_feedbacks")
+}
+
+// ──────────────────────────────────────────────
+// TREE AUDIT LOG (Immutable — never updated)
+// ──────────────────────────────────────────────
+
+enum AuditAction {
+  TREE_CREATED
+  TREE_UPDATED
+  IMAGE_ADDED
+  IMAGE_REMOVED
+  FEEDBACK_APPLIED
+  PUBLISHED
+  UNPUBLISHED
+  FEATURED
+  UNFEATURED
+}
+
+model TreeAuditLog {
+  id              String      @id @default(cuid())
+  treeId          String
+
+  action          AuditAction
+  fieldName       String?     // Which field changed (for TREE_UPDATED)
+  previousValue   String?     @db.Text
+  newValue        String?     @db.Text
+  reason          String?     @db.Text  // Optional reason (e.g. from feedback)
+
+  performedByName String      // Admin name (or "System")
+
+  // Immutable timestamp — no updatedAt
+  createdAt       DateTime    @default(now())
+
+  tree            Tree        @relation(fields: [treeId], references: [id], onDelete: Cascade)
+
+  @@index([treeId])
+  @@index([treeId, createdAt])
+  @@index([action])
+  @@map("tree_audit_logs")
+}

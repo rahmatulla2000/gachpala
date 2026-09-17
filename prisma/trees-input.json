@@ -1,0 +1,219 @@
+[
+  {
+    "slug": "arjun-tree",
+    "banglaName": "অর্জুন গাছ",
+    "englishName": "Arjun Tree",
+    "commonName": "Arjuna",
+    "scientificName": "Terminalia arjuna",
+    "kingdom": "Plantae",
+    "family": "Combretaceae",
+    "genus": "Terminalia",
+    "species": "T. arjuna",
+    "height": "20-25 meters",
+    "lifespan": "100-150 years",
+    "description": "A large, evergreen tree with a spreading crown and drooping branches. It is highly revered in traditional Ayurvedic medicine, particularly for its heart-healing properties.",
+    "characteristics": "Distinctive smooth, grey bark that flakes off in large, flat pieces, leaving a pale, scarred trunk beneath.",
+    "habitat": "Thrives in well-drained, moist soils, often found along riverbanks and dry riverbeds.",
+    "distribution": "Found extensively across Bangladesh, frequently planted along avenues and in botanical gardens.",
+    "benefits": "The bark is a powerful cardiovascular tonic. The tree also provides excellent shade and acts as a host for the Tasar silkworm.",
+    "uses": "Bark is dried and boiled as a medicinal tea for heart ailments. The wood is extremely hard and used for boat building and agricultural implements.",
+    "hasFruit": true,
+    "hasFlower": true,
+    "isNative": true,
+    "hasMedicinalUse": true,
+    "published": true,
+    "featured": false,
+    "categories": [
+      "medicinal-trees",
+      "shade-trees",
+      "timber-trees",
+      "native-trees"
+    ],
+    "fruitInfo": {
+      "name": "Arjun Fruit (অর্জুন ফল)",
+      "description": "A woody, fibrous, star-shaped fruit with five prominent wings.",
+      "taste": "Highly astringent (not consumed for flavor)",
+      "season": "February - May",
+      "uses": "Used in some traditional medicinal preparations, though the bark is much more commonly used."
+    },
+    "flowerInfo": {
+      "name": "Arjun Flower",
+      "color": "Pale yellow",
+      "season": "April - July",
+      "description": "Small, cup-shaped flowers occurring in auxiliary spikes, carrying a strong fragrance."
+    }
+  },
+  {
+    "slug": "beleric-tree",
+    "banglaName": "বহেরা গাছ",
+    "englishName": "Beleric",
+    "commonName": "Bahera",
+    "scientificName": "Terminalia bellirica",
+    "kingdom": "Plantae",
+    "family": "Combretaceae",
+    "genus": "Terminalia",
+    "species": "T. bellirica",
+    "height": "15-25 meters",
+    "lifespan": "80-100 years",
+    "description": "A large deciduous tree known for its highly medicinal fruit. It is one of the three crucial ingredients in the famous Ayurvedic herbal remedy, 'Triphala'.",
+    "characteristics": "Tall, straight trunk with a broad, rounded canopy and large, broadly oval leaves clustered at the ends of branches.",
+    "habitat": "Tropical and subtropical forests, preferring moist valleys.",
+    "distribution": "Grows wild in the deciduous forests of Bangladesh, including the Chittagong Hill Tracts and Madhupur tract.",
+    "benefits": "Fruit is highly beneficial for digestive health, respiratory ailments, and immunity.",
+    "uses": "Dried fruits are ground into powder for medicinal use (Triphala). The wood is used for packing cases and low-cost furniture.",
+    "hasFruit": true,
+    "hasFlower": true,
+    "isNative": true,
+    "hasMedicinalUse": true,
+    "published": true,
+    "featured": false,
+    "categories": [
+      "medicinal-trees",
+      "fruit-trees",
+      "native-trees"
+    ],
+    "fruitInfo": {
+      "name": "Bahera (বহেরা)",
+      "description": "A somewhat rounded, grey-velvety drupe containing a single hard stone.",
+      "taste": "Astringent and bitter",
+      "season": "November - February",
+      "uses": "Dried and used extensively in Ayurvedic and Unani medicine."
+    },
+    "flowerInfo": {
+      "name": "Bahera Flower",
+      "color": "Pale greenish-yellow",
+      "season": "April - May",
+      "description": "Small flowers with a strong, sometimes unpleasant odor, arranged in solitary, auxiliary spikes."
+    }
+  },
+  {
+    "slug": "indian-gooseberry",
+    "banglaName": "আমলকি গাছ",
+    "englishName": "Indian Gooseberry",
+    "commonName": "Amla",
+    "scientificName": "Phyllanthus emblica",
+    "kingdom": "Plantae",
+    "family": "Phyllanthaceae",
+    "genus": "Phyllanthus",
+    "species": "P. emblica",
+    "height": "8-18 meters",
+    "lifespan": "40-60 years",
+    "description": "A small to medium-sized deciduous tree famous for bearing round, highly nutritious fruits. It is another core component of the 'Triphala' formulation.",
+    "characteristics": "Crooked trunk with spreading branches and feathery, light-green pinnate leaves.",
+    "habitat": "Tropical and subtropical climates, highly adaptable to dry and degraded soils.",
+    "distribution": "Widespread across Bangladesh in both wild and cultivated forms, often planted in homesteads.",
+    "benefits": "One of the richest natural sources of Vitamin C. Boosts immunity, improves hair health, and acts as a powerful antioxidant.",
+    "uses": "Fruit is eaten raw, pickled, candied, or powdered. Oil extracted from the fruit is widely used in hair care.",
+    "hasFruit": true,
+    "hasFlower": true,
+    "isNative": true,
+    "hasMedicinalUse": true,
+    "published": true,
+    "featured": true,
+    "categories": [
+      "medicinal-trees",
+      "fruit-trees",
+      "native-trees"
+    ],
+    "fruitInfo": {
+      "name": "Amla (আমলকি)",
+      "description": "Spherical, light greenish-yellow fruit with a smooth and hard appearance, featuring six vertical stripes.",
+      "taste": "Sour, bitter, and astringent, famously leaving a sweet aftertaste when water is drunk afterward",
+      "season": "October - January",
+      "uses": "Eaten raw with salt, made into achaar (pickle), morobba (candied), and dried for medicine."
+    },
+    "flowerInfo": {
+      "name": "Amla Flower",
+      "color": "Greenish-yellow",
+      "season": "March - May",
+      "description": "Tiny, inconspicuous flowers appearing in clusters along the branchlets."
+    }
+  },
+  {
+    "slug": "haritaki-tree",
+    "banglaName": "হরিতকি গাছ",
+    "englishName": "Haritaki",
+    "commonName": "Chebulic Myrobalan",
+    "scientificName": "Terminalia chebula",
+    "kingdom": "Plantae",
+    "family": "Combretaceae",
+    "genus": "Terminalia",
+    "species": "T. chebula",
+    "height": "15-25 meters",
+    "lifespan": "80-120 years",
+    "description": "A medium to large deciduous tree known in Ayurveda as the 'King of Medicines'. It is the final ingredient in the 'Triphala' triad.",
+    "characteristics": "Dark brown bark with deep longitudinal cracks and thick, leathery, oval-shaped leaves.",
+    "habitat": "Dry to moist deciduous forests, tolerating a variety of soil conditions.",
+    "distribution": "Found in the hill tracts and sal forests of Bangladesh, as well as cultivated in medicinal gardens.",
+    "benefits": "Highly valued for digestive aid, detoxification, and anti-inflammatory properties.",
+    "uses": "Fruit is dried and powdered for medicinal use. Historically used in tanning leather due to high tannin content.",
+    "hasFruit": true,
+    "hasFlower": true,
+    "isNative": true,
+    "hasMedicinalUse": true,
+    "published": true,
+    "featured": false,
+    "categories": [
+      "medicinal-trees",
+      "fruit-trees",
+      "native-trees"
+    ],
+    "fruitInfo": {
+      "name": "Haritaki (হরিতকি)",
+      "description": "Oval or elliptical drupe that turns yellowish-brown to blackish when ripe and dried, heavily ribbed.",
+      "taste": "Astringent, bitter, and slightly sweetish",
+      "season": "November - March",
+      "uses": "Dried, powdered, and consumed with warm water for digestive health; used in Triphala."
+    },
+    "flowerInfo": {
+      "name": "Haritaki Flower",
+      "color": "Dull white to yellow",
+      "season": "April - June",
+      "description": "Small, star-shaped flowers that bloom in terminal spikes, emitting a strong, unpleasant scent."
+    }
+  },
+  {
+    "slug": "tamarind-tree",
+    "banglaName": "তেঁতুল গাছ",
+    "englishName": "Tamarind Tree",
+    "commonName": "Tamarind",
+    "scientificName": "Tamarindus indica",
+    "kingdom": "Plantae",
+    "family": "Fabaceae",
+    "genus": "Tamarindus",
+    "species": "T. indica",
+    "height": "15-25 meters",
+    "lifespan": "150-200 years",
+    "description": "A massive, long-lived, evergreen tree that produces pod-like fruit containing an edible, highly acidic pulp. Though botanically native to Africa, it has been deeply embedded in South Asian cuisine for millennia.",
+    "characteristics": "Huge, dense, umbrella-shaped canopy with delicate, feathery pinnate leaves and a stout, heavily fissured trunk.",
+    "habitat": "Tropical and subtropical regions, highly drought-resistant and tolerant of poor soils.",
+    "distribution": "Cultivated and grows wild abundantly throughout rural and urban Bangladesh.",
+    "benefits": "Provides dense shade. Fruit is rich in tartaric acid, B vitamins, and essential minerals.",
+    "uses": "Fruit pulp is a staple souring agent in curries, chutneys, and street food (like Fuchka). Wood is very hard, used for chopping blocks and furniture.",
+    "hasFruit": true,
+    "hasFlower": true,
+    "isNative": false,
+    "hasMedicinalUse": true,
+    "published": true,
+    "featured": true,
+    "categories": [
+      "fruit-trees",
+      "shade-trees",
+      "timber-trees",
+      "medicinal-trees"
+    ],
+    "fruitInfo": {
+      "name": "Tamarind (তেঁতুল)",
+      "description": "A brown, pod-like legume containing sticky pulp and hard, glossy black seeds.",
+      "taste": "Intensely sour when green, becoming sweeter but remaining tart when ripe",
+      "season": "February - April",
+      "uses": "Essential in South Asian cooking, chutneys, Fuchka/Chotpoti water, and cooling summer drinks."
+    },
+    "flowerInfo": {
+      "name": "Tamarind Flower",
+      "color": "Pale yellow with red/pink veins",
+      "season": "May - July",
+      "description": "Small, delicate, orchid-like flowers growing in drooping racemes."
+    }
+  }
+]

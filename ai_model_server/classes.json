@@ -1,0 +1,137 @@
+[
+  {
+    "id": 0,
+    "folder": "আম_Mango",
+    "banglaName": "আম",
+    "englishName": "Mango",
+    "scientificName": "Mangifera indica",
+    "family": "Anacardiaceae",
+    "genus": "Mangifera"
+  },
+  {
+    "id": 1,
+    "folder": "আমড়া_Hog plum",
+    "banglaName": "আমড়া",
+    "englishName": "Hog plum",
+    "scientificName": "Spondias mombin",
+    "family": "Anacardiaceae",
+    "genus": "Spondias"
+  },
+  {
+    "id": 2,
+    "folder": "কাঁঠাল_Jackfruit",
+    "banglaName": "কাঁঠাল",
+    "englishName": "Jackfruit",
+    "scientificName": "Artocarpus heterophyllus",
+    "family": "Moraceae",
+    "genus": "Artocarpus"
+  },
+  {
+    "id": 3,
+    "folder": "কামরাঙ্গা_Star fruit",
+    "banglaName": "কামরাঙ্গা",
+    "englishName": "Star fruit",
+    "scientificName": "Averrhoa carambola",
+    "family": "Oxalidaceae",
+    "genus": "Averrhoa"
+  },
+  {
+    "id": 4,
+    "folder": "কুল_Indian jujube",
+    "banglaName": "কুল",
+    "englishName": "Indian jujube",
+    "scientificName": "Ziziphus mauritiana",
+    "family": "Rhamnaceae",
+    "genus": "Ziziphus"
+  },
+  {
+    "id": 5,
+    "folder": "জলপাই_Indian olive",
+    "banglaName": "জলপাই",
+    "englishName": "Indian olive",
+    "scientificName": "Elaeocarpus serratus",
+    "family": "Elaeocarpaceae",
+    "genus": "Elaeocarpus"
+  },
+  {
+    "id": 6,
+    "folder": "জাম_Java plum",
+    "banglaName": "জাম",
+    "englishName": "Java plum",
+    "scientificName": "Syzygium cumini",
+    "family": "Myrtaceae",
+    "genus": "Syzygium"
+  },
+  {
+    "id": 7,
+    "folder": "তেঁতুল_Tamarind",
+    "banglaName": "তেঁতুল",
+    "englishName": "Tamarind",
+    "scientificName": "Tamarindus indica",
+    "family": "Fabaceae",
+    "genus": "Tamarindus"
+  },
+  {
+    "id": 8,
+    "folder": "নারিকেল_Coconut",
+    "banglaName": "নারিকেল",
+    "englishName": "Coconut",
+    "scientificName": "Cocos nucifera",
+    "family": "Arecaceae",
+    "genus": "Cocos"
+  },
+  {
+    "id": 9,
+    "folder": "পেঁপে_Papaya",
+    "banglaName": "পেঁপে",
+    "englishName": "Papaya",
+    "scientificName": "Carica papaya",
+    "family": "Caricaceae",
+    "genus": "Carica"
+  },
+  {
+    "id": 10,
+    "folder": "পেয়ারা_Guava",
+    "banglaName": "পেয়ারা",
+    "englishName": "Guava",
+    "scientificName": "Psidium guajava",
+    "family": "Myrtaceae",
+    "genus": "Psidium"
+  },
+  {
+    "id": 11,
+    "folder": "বেল_Bael",
+    "banglaName": "বেল",
+    "englishName": "Bael",
+    "scientificName": "Aegle marmelos",
+    "family": "Rutaceae",
+    "genus": "Aegle"
+  },
+  {
+    "id": 12,
+    "folder": "লিচু_Lychee",
+    "banglaName": "লিচু",
+    "englishName": "Lychee",
+    "scientificName": "Litchi chinensis",
+    "family": "Sapindaceae",
+    "genus": "Litchi"
+  },
+  {
+    "id": 13,
+    "folder": "লেবু_Lemon",
+    "banglaName": "লেবু",
+    "englishName": "Lemon",
+    "scientificName": "Citrus limon",
+    "family": "Rutaceae",
+    "genus": "Citrus"
+  },
+  {
+    "id": 14,
+    "folder": "সফেদা_Sapodilla",
+    "banglaName": "সফেদা",
+    "englishName": "Sapodilla",
+    "scientificName": "Manilkara zapota",
+    "family": "Sapotaceae",
+    "genus": "Manilkara"
+  }
+]

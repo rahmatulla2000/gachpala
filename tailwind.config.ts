@@ -1,0 +1,142 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+          950: '#052e16',
+        },
+        forest: {
+          50: '#f2f7f4',
+          100: '#e0ece4',
+          200: '#c3d9cb',
+          300: '#9bbea8',
+          400: '#6f9e80',
+          500: '#4f8264',
+          600: '#3d6a50',
+          700: '#2d6a4f',
+          800: '#284536',
+          900: '#22392d',
+          950: '#0f1f19',
+        },
+        earth: {
+          50: '#fdf8f0',
+          100: '#f9eddb',
+          200: '#f2d9b6',
+          300: '#e8be85',
+          400: '#d4a373',
+          500: '#c88b55',
+          600: '#ba7545',
+          700: '#9b5d3a',
+          800: '#7d4c34',
+          900: '#66402d',
+          950: '#372017',
+        },
+        leaf: {
+          50: '#f4f9f0',
+          100: '#e6f2dc',
+          200: '#cde5bb',
+          300: '#a8d28e',
+          400: '#84bc65',
+          500: '#64a145',
+          600: '#4d8134',
+          700: '#3c642b',
+          800: '#335127',
+          900: '#2b4322',
+          950: '#14240f',
+        },
+        neutral: {
+          warm: '#fafaf5',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      fontSize: {
+        '4.5xl': ['2.5rem', { lineHeight: '1.2' }],
+        '5.5xl': ['3.5rem', { lineHeight: '1.1' }],
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+      },
+      boxShadow: {
+        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+        'soft-lg': '0 10px 40px -10px rgba(0, 0, 0, 0.1), 0 2px 10px -2px rgba(0, 0, 0, 0.04)',
+        'soft-xl': '0 20px 60px -15px rgba(0, 0, 0, 0.12), 0 4px 20px -4px rgba(0, 0, 0, 0.05)',
+        'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.04)',
+        'glow-green': '0 0 20px rgba(34, 197, 94, 0.15)',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.6s ease-out',
+        'fade-in-up': 'fadeInUp 0.6s ease-out',
+        'slide-in-right': 'slideInRight 0.4s ease-out',
+        'slide-in-left': 'slideInLeft 0.4s ease-out',
+        'scale-in': 'scaleIn 0.3s ease-out',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
+        'spin-slow': 'spin 3s linear infinite',
+        'counter': 'counter 2s ease-out forwards',
+        'leaf-fall': 'leafFall 10s ease-in-out infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideInLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        pulseSoft: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
+        },
+        leafFall: {
+          '0%': { transform: 'translateY(-10%) rotate(0deg)', opacity: '0' },
+          '10%': { opacity: '0.6' },
+          '100%': { transform: 'translateY(110%) rotate(720deg)', opacity: '0' },
+        },
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'hero-pattern': 'linear-gradient(135deg, rgba(15, 31, 25, 0.9) 0%, rgba(45, 106, 79, 0.7) 100%)',
+      },
+    },
+  },
+  plugins: [],
+};
