@@ -6,23 +6,28 @@ import type { CategoryWithCount } from '@/types';
  * Get all categories with tree counts
  */
 export async function getCategories(): Promise<CategoryWithCount[]> {
-  // Manually count published trees for each category
-  const categoriesWithCounts = await Promise.all(
-    (await prisma.category.findMany({ orderBy: { sortOrder: 'asc' } })).map(async (cat: { id: string; name: string; slug: string; description: string | null; image: string | null; icon: string | null; sortOrder: number; createdAt: Date; updatedAt: Date }) => {
-      const count = await prisma.treeCategory.count({
-        where: {
-          categoryId: cat.id,
-          tree: { published: true },
-        },
-      });
-      return {
-        ...cat,
-        _count: { trees: count },
-      };
-    })
-  );
+  try {
+    // Manually count published trees for each category
+    const categoriesWithCounts = await Promise.all(
+      (await prisma.category.findMany({ orderBy: { sortOrder: 'asc' } })).map(async (cat: { id: string; name: string; slug: string; description: string | null; image: string | null; icon: string | null; sortOrder: number; createdAt: Date; updatedAt: Date }) => {
+        const count = await prisma.treeCategory.count({
+          where: {
+            categoryId: cat.id,
+            tree: { published: true },
+          },
+        });
+        return {
+          ...cat,
+          _count: { trees: count },
+        };
+      })
+    );
 
-  return categoriesWithCounts;
+    return categoriesWithCounts;
+  } catch (error) {
+    console.error('getCategories error:', error);
+    return [];
+  }
 }
 
 /**

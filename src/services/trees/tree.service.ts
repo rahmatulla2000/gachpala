@@ -112,23 +112,33 @@ export async function getPublishedTrees(params: TreeListParams): Promise<TreeLis
     }
   })();
 
-  const [trees, total] = await Promise.all([
-    prisma.tree.findMany({
-      where,
-      select: TREE_CARD_SELECT,
-      orderBy,
-      skip: (page - 1) * limit,
-      take: limit,
-    }),
-    prisma.tree.count({ where }),
-  ]);
+  try {
+    const [trees, total] = await Promise.all([
+      prisma.tree.findMany({
+        where,
+        select: TREE_CARD_SELECT,
+        orderBy,
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.tree.count({ where }),
+    ]);
 
-  return {
-    trees: trees as unknown as TreeCardData[],
-    total,
-    page,
-    totalPages: Math.ceil(total / limit),
-  };
+    return {
+      trees: trees as unknown as TreeCardData[],
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
+  } catch (error) {
+    console.error('getPublishedTrees error:', error);
+    return {
+      trees: [],
+      total: 0,
+      page: 1,
+      totalPages: 0,
+    };
+  }
 }
 
 /**
@@ -260,38 +270,47 @@ export async function findTreeByPrediction(
  * Get filter options from database
  */
 export async function getFilterOptions() {
-  const [families, genera, kingdoms] = await Promise.all([
-    prisma.tree.groupBy({
-      by: ['family'],
-      where: { published: true, family: { not: '' } },
-      _count: true,
-      orderBy: { family: 'asc' },
-    }),
-    prisma.tree.groupBy({
-      by: ['genus'],
-      where: { published: true, genus: { not: '' } },
-      _count: true,
-      orderBy: { genus: 'asc' },
-    }),
-    prisma.tree.groupBy({
-      by: ['kingdom'],
-      where: { published: true, kingdom: { not: '' } },
-      _count: true,
-      orderBy: { kingdom: 'asc' },
-    }),
-  ]);
+  try {
+    const [families, genera, kingdoms] = await Promise.all([
+      prisma.tree.groupBy({
+        by: ['family'],
+        where: { published: true, family: { not: '' } },
+        _count: true,
+        orderBy: { family: 'asc' },
+      }),
+      prisma.tree.groupBy({
+        by: ['genus'],
+        where: { published: true, genus: { not: '' } },
+        _count: true,
+        orderBy: { genus: 'asc' },
+      }),
+      prisma.tree.groupBy({
+        by: ['kingdom'],
+        where: { published: true, kingdom: { not: '' } },
+        _count: true,
+        orderBy: { kingdom: 'asc' },
+      }),
+    ]);
 
-  return {
-    families: families
-      .filter((f: { family: string | null; _count: number }) => f.family)
-      .map((f: { family: string | null; _count: number }) => ({ value: f.family!, label: f.family!, count: f._count })),
-    genera: genera
-      .filter((g: { genus: string | null; _count: number }) => g.genus)
-      .map((g: { genus: string | null; _count: number }) => ({ value: g.genus!, label: g.genus!, count: g._count })),
-    kingdoms: kingdoms
-      .filter((k: { kingdom: string | null; _count: number }) => k.kingdom)
-      .map((k: { kingdom: string | null; _count: number }) => ({ value: k.kingdom!, label: k.kingdom!, count: k._count })),
-  };
+    return {
+      families: families
+        .filter((f: { family: string | null; _count: number }) => f.family)
+        .map((f: { family: string | null; _count: number }) => ({ value: f.family!, label: f.family!, count: f._count })),
+      genera: genera
+        .filter((g: { genus: string | null; _count: number }) => g.genus)
+        .map((g: { genus: string | null; _count: number }) => ({ value: g.genus!, label: g.genus!, count: g._count })),
+      kingdoms: kingdoms
+        .filter((k: { kingdom: string | null; _count: number }) => k.kingdom)
+        .map((k: { kingdom: string | null; _count: number }) => ({ value: k.kingdom!, label: k.kingdom!, count: k._count })),
+    };
+  } catch (error) {
+    console.error('getFilterOptions error:', error);
+    return {
+      families: [],
+      genera: [],
+      kingdoms: [],
+    };
+  }
 }
 
 // ──────────────────────────────────────────────

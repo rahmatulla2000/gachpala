@@ -45,7 +45,7 @@ export default async function CategoriesPage() {
                       {category.name}
                     </h2>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {category._count.trees} {category._count.trees === 1 ? 'tree' : 'trees'}
+                      {category._count?.trees ?? 0} {(category._count?.trees ?? 0) === 1 ? 'tree' : 'trees'}
                     </p>
                   </div>
                 </div>
