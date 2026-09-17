@@ -13,7 +13,12 @@ export async function middleware(req: NextRequest) {
   }
 
   // Protect all other /admin/* routes
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || 'knows-about-tree-secret-key-2024-dev';
+  const token = await getToken({
+    req,
+    secret,
+    secureCookie: req.url.startsWith('https://'),
+  });
 
   if (!token) {
     const loginUrl = new URL('/admin/login', req.url);
