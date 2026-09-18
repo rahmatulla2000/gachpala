@@ -19,12 +19,13 @@ except ImportError:
 
 # Set token here or pass as argument
 HF_TOKEN = sys.argv[1] if len(sys.argv) > 1 else ""
-REPO_ID = "rahmot2000/fruit-tree-ai-api"
+REPO_ID = sys.argv[2] if len(sys.argv) > 2 else "rahmot2000/knows-about-tree"
 
 def upload():
     if not HF_TOKEN or not HF_TOKEN.startswith("hf_"):
         print("[ERROR] Valid Hugging Face Access Token required!")
-        print("Usage: python upload_to_hf.py hf_YOUR_TOKEN_HERE")
+        print("Usage: python upload_to_hf.py hf_YOUR_TOKEN_HERE [REPO_ID]")
+        print("Example: python upload_to_hf.py hf_YOUR_TOKEN_HERE rahmot2000/knows-about-tree")
         return
 
     api = HfApi(token=HF_TOKEN)

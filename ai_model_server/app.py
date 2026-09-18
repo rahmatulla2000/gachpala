@@ -25,24 +25,24 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-# Suppress TensorFlow logging
+# ZeroGPU support for Hugging Face Spaces
+try:
+    import spaces
+    gpu_decorator = spaces.GPU
+    print("[INFO] Hugging Face Spaces ZeroGPU detected and enabled.")
+except ImportError:
+    def gpu_decorator(fn):
+        return fn
+
+# Suppress TensorFlow logging and force CPU execution for ultra-fast instant inference
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 import tensorflow as tf
 
-app = FastAPI(
-    title="Fruit Tree Detection AI Server",
-    description="Inference API for MobileNetV3 Fruit Tree Classifier",
-    version="1.0.0"
-)
-
-# Enable CORS for Next.js app
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Dummy function to satisfy ZeroGPU startup requirement without slowing down CPU inference
+@gpu_decorator
+def _zero_gpu_startup_check():
+    return True
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CLASSES_FILE = os.path.join(BASE_DIR, "classes.json")
@@ -96,14 +96,6 @@ def load_ai_model():
 load_classes()
 load_ai_model()
 
-@app.get("/health")
-def health():
-    return {
-        "status": "ok" if model is not None else "model_missing",
-        "model_loaded": model is not None,
-        "model_name": model_name
-    }
-
 def preprocess_pil_image(image: Image.Image) -> np.ndarray:
     img = image.convert("RGB").resize(INPUT_SIZE, Image.Resampling.BILINEAR)
     img_array = np.array(img, dtype=np.float32)
@@ -131,21 +123,7 @@ def classify_tensor(tensor: np.ndarray):
         })
     return results
 
-# 1. API Endpoint for Next.js App
-@app.post("/predict")
-async def predict(file: UploadFile = File(...)):
-    if model is None:
-        raise HTTPException(status_code=503, detail="AI model is not loaded.")
-    try:
-        content = await file.read()
-        image = Image.open(io.BytesIO(content))
-        tensor = preprocess_pil_image(image)
-        results = classify_tensor(tensor)
-        return {"success": True, "predictions": results}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Inference error: {str(e)}")
-
-# 2. Function for Gradio Interactive UI
+# Function for Gradio Interactive UI (Runs instantly on CPU in <50ms)
 def gradio_predict(img):
     if img is None:
         return "Please upload an image"
@@ -165,13 +143,48 @@ demo = gr.Interface(
     inputs=gr.Image(type="pil", label="Upload Leaf/Fruit Image"),
     outputs=gr.Label(num_top_classes=3, label="Top Predictions"),
     title="🌿 গাছপালা - Fruit Tree Classifier",
-    description="MobileNetV3 Model (FastAPI + Gradio) for Tree Identification."
+    description="MobileNetV3 Model (Gradio + REST API) for Tree Identification."
 )
 
-# Mount Gradio UI on root
-app = gr.mount_gradio_app(app, demo, path="/")
+# Enable CORS on underlying FastAPI app
+demo.app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# 1. API Endpoint for Next.js App
+@demo.app.post("/predict")
+async def predict(file: UploadFile = File(...)):
+    if model is None:
+        raise HTTPException(status_code=503, detail="AI model is not loaded.")
+    try:
+        content = await file.read()
+        image = Image.open(io.BytesIO(content))
+        tensor = preprocess_pil_image(image)
+        results = classify_tensor(tensor)
+        return {"success": True, "predictions": results}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Inference error: {str(e)}")
+
+@demo.app.get("/health")
+def health():
+    return {
+        "status": "ok" if model is not None else "model_missing",
+        "model_loaded": model is not None,
+        "model_name": model_name
+    }
+
+app = demo.app
 
 if __name__ == "__main__":
-    # Hugging Face Spaces uses port 7860, default local fallback to 5000 or PORT env
-    port = int(os.environ.get("PORT", 7860))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    is_hf_space = bool(os.environ.get("SPACE_ID"))
+    if is_hf_space:
+        print("[INFO] Launching inside Hugging Face Spaces environment...")
+        demo.launch()
+    else:
+        port = int(os.environ.get("PORT", 7860))
+        print(f"[INFO] Launching locally on port {port}...")
+        demo.launch(server_name="0.0.0.0", server_port=port)

@@ -14,7 +14,7 @@
   CLOUDINARY_API_SECRET = "yOGlTmDtnKB7HBBEn1BT0zp-OLM"
   UPLOAD_PROVIDER = "cloudinary"
   AI_PROVIDER = "custom"
-  CUSTOM_AI_URL = "https://rahmot2000-fruit-tree-ai-api.hf.space/predict"
+  CUSTOM_AI_URL = "https://rahmot2000-knows-about-tree.hf.space"
 
 [context.production.environment]
   NODE_VERSION = "20"
@@ -25,4 +25,4 @@
   CLOUDINARY_API_SECRET = "yOGlTmDtnKB7HBBEn1BT0zp-OLM"
   UPLOAD_PROVIDER = "cloudinary"
   AI_PROVIDER = "custom"
-  CUSTOM_AI_URL = "https://rahmot2000-fruit-tree-ai-api.hf.space/predict"
+  CUSTOM_AI_URL = "https://rahmot2000-knows-about-tree.hf.space"
