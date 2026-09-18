@@ -27,7 +27,10 @@ export class CustomModelProvider implements DetectionProvider {
   name = 'custom_mobilenet_v3';
 
   async detect(imageBuffer: Buffer, mimeType: string): Promise<DetectionPrediction[]> {
-    const rawUrl = process.env.CUSTOM_AI_URL || 'http://127.0.0.1:7860/predict';
+    let rawUrl = process.env.CUSTOM_AI_URL || 'https://rahmot2000-knows-about-tree.hf.space';
+    if (!rawUrl || rawUrl.includes('fruit-tree-ai-api') || (process.env.NODE_ENV === 'production' && rawUrl.includes('127.0.0.1'))) {
+      rawUrl = 'https://rahmot2000-knows-about-tree.hf.space';
+    }
     const baseUrl = rawUrl.replace(/\/predict\/?$/, '').replace(/\/$/, '');
     const extension = mimeType.split('/')[1] || 'jpg';
     const filename = `tree_image.${extension}`;

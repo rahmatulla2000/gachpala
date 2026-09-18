@@ -30,9 +30,14 @@ export async function detectTree(
   }
 
   // Filter predictions by confidence threshold
-  const filteredPredictions = predictions
+  let filteredPredictions = predictions
     .filter(p => p.confidence >= DEFAULT_CONFIG.confidenceThreshold)
     .slice(0, DEFAULT_CONFIG.maxPredictions);
+
+  // If none meet high threshold, show the top candidates
+  if (filteredPredictions.length === 0 && predictions.length > 0) {
+    filteredPredictions = predictions.slice(0, DEFAULT_CONFIG.maxPredictions || 3);
+  }
 
   // Try to match the top prediction against our database
   let matchedTree = null;
