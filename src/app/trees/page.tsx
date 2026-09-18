@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: 'Browse our comprehensive collection of trees. Search, filter, and explore detailed botanical information.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function TreesPage({
   searchParams,
 }: {

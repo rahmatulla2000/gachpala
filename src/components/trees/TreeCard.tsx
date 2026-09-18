@@ -9,7 +9,7 @@ interface TreeCardProps {
 }
 
 export function TreeCard({ tree, featured = false }: TreeCardProps) {
-  const primaryImage = tree.images?.[0];
+  const primaryImage = tree.images?.find((img) => img.isPrimary) || tree.images?.[0];
   const categoryName = tree.categories?.[0]?.category?.name;
   const createdByName = typeof tree.createdByName === 'string' ? tree.createdByName : null;
   const isAdmin = !createdByName || createdByName.toLowerCase() === 'admin';

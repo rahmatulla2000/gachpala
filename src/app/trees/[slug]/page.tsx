@@ -5,6 +5,8 @@ import { Footer } from '@/components/layout/Footer';
 import { getTreeBySlug, getRelatedTrees } from '@/services/trees/tree.service';
 import { TreeDetailContent } from '@/components/trees/TreeDetailContent';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const tree = await getTreeBySlug(params.slug);
   if (!tree) return { title: 'Tree Not Found' };

@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { revalidatePath } from 'next/cache';
 import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { uploadImage, validateImage } from '@/services/uploads/upload.service';
 import { addTreeImage, removeTreeImage } from '@/services/trees/tree.service';
+
+function revalidateTreePaths(slug?: string) {
+  try {
+    revalidatePath('/');
+    revalidatePath('/trees');
+    if (slug) revalidatePath(`/trees/${slug}`);
+    revalidatePath('/categories');
+  } catch (err) {
+    console.warn('Revalidation warning:', err);
+  }
+}
 
 /**
  * POST /api/admin/trees/[id]/images
@@ -44,15 +56,7 @@ export async function POST(
     // Upload image (Cloudinary or local fallback)
     const uploadResult = await uploadImage(file, 'trees');
 
-    // If marked as primary, unset existing primary images
-    if (isPrimary) {
-      await prisma.treeImage.updateMany({
-        where: { treeId: params.id },
-        data: { isPrimary: false },
-      });
-    }
-
-    // Save image to database
+    // Save image to database (addTreeImage will auto-handle isPrimary)
     const newImage = await addTreeImage(
       params.id,
       {
@@ -63,6 +67,8 @@ export async function POST(
       },
       performedByName
     );
+
+    revalidateTreePaths(tree.slug);
 
     return NextResponse.json({ success: true, data: newImage }, { status: 201 });
   } catch (error) {
@@ -110,6 +116,7 @@ export async function DELETE(
     if (image.isPrimary) {
       const nextImage = await prisma.treeImage.findFirst({
         where: { treeId: params.id },
+        orderBy: { createdAt: 'desc' },
       });
       if (nextImage) {
         await prisma.treeImage.update({
@@ -118,6 +125,12 @@ export async function DELETE(
         });
       }
     }
+
+    const tree = await prisma.tree.findUnique({
+      where: { id: params.id },
+      select: { slug: true },
+    });
+    revalidateTreePaths(tree?.slug);
 
     return NextResponse.json({ success: true, message: 'Image deleted successfully' });
   } catch (error) {
@@ -160,6 +173,12 @@ export async function PATCH(
         where: { id: imageId },
         data: { isPrimary: true },
       });
+
+      const tree = await prisma.tree.findUnique({
+        where: { id: params.id },
+        select: { slug: true },
+      });
+      revalidateTreePaths(tree?.slug);
 
       return NextResponse.json({ success: true, data: updated });
     }

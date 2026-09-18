@@ -14,7 +14,7 @@ const AUDITED_FIELDS: (keyof Prisma.TreeUpdateInput)[] = [
   'sources',
 ];
 
-const TREE_CARD_SELECT = {
+const TREE_CARD_SELECT: Prisma.TreeSelect = {
   id: true,
   slug: true,
   banglaName: true,
@@ -23,8 +23,12 @@ const TREE_CARD_SELECT = {
   commonName: true,
   createdByName: true,
   images: {
-    where: { isPrimary: true },
     select: { url: true, altText: true, isPrimary: true },
+    orderBy: [
+      { isPrimary: 'desc' },
+      { sortOrder: 'asc' },
+      { createdAt: 'desc' },
+    ],
     take: 1,
   },
   categories: {
@@ -34,18 +38,24 @@ const TREE_CARD_SELECT = {
       },
     },
   },
-} as const;
+};
 
-const TREE_FULL_INCLUDE = {
-  images: { orderBy: { sortOrder: 'asc' as const } },
+const TREE_FULL_INCLUDE: Prisma.TreeInclude = {
+  images: {
+    orderBy: [
+      { isPrimary: 'desc' },
+      { sortOrder: 'asc' },
+      { createdAt: 'desc' },
+    ],
+  },
   varieties: {
     include: { images: true },
-    orderBy: { createdAt: 'asc' as const },
+    orderBy: { createdAt: 'asc' },
   },
   categories: {
     include: { category: true },
   },
-} as const;
+};
 
 /**
  * Get published trees with pagination, search, and filtering
@@ -328,11 +338,11 @@ export async function getAllTrees() {
   });
 }
 
-export async function getTreeById(id: string) {
+export async function getTreeById(id: string): Promise<TreeWithRelations | null> {
   return prisma.tree.findUnique({
     where: { id },
     include: TREE_FULL_INCLUDE,
-  });
+  }) as Promise<TreeWithRelations | null>;
 }
 
 export async function createTree(
@@ -473,6 +483,21 @@ export async function addTreeImage(
   },
   performedByName = 'Admin'
 ) {
+  // Check if tree already has a primary image
+  const existingPrimary = await prisma.treeImage.findFirst({
+    where: { treeId, isPrimary: true },
+  });
+
+  // If explicitly requested as primary OR tree has no existing primary image, make this primary
+  const shouldBePrimary = Boolean(imageData.isPrimary) || !existingPrimary;
+
+  if (shouldBePrimary && existingPrimary) {
+    await prisma.treeImage.updateMany({
+      where: { treeId, isPrimary: true },
+      data: { isPrimary: false },
+    });
+  }
+
   const image = await prisma.treeImage.create({
     data: {
       treeId,
@@ -481,7 +506,7 @@ export async function addTreeImage(
       altText: imageData.altText,
       caption: imageData.caption,
       uploadedByName: performedByName,
-      isPrimary: imageData.isPrimary ?? false,
+      isPrimary: shouldBePrimary,
       sortOrder: imageData.sortOrder ?? 0,
     },
   });

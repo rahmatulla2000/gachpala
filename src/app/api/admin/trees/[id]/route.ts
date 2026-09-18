@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { revalidatePath } from 'next/cache';
 import { authOptions } from '@/lib/auth';
 import { getTreeById, updateTree } from '@/services/trees/tree.service';
 
@@ -49,6 +50,16 @@ export async function PATCH(
     const performedByName = (session.user as { name?: string })?.name ?? 'Admin';
 
     const tree = await updateTree(params.id, data, categoryIds, performedByName, reason);
+
+    try {
+      revalidatePath('/');
+      revalidatePath('/trees');
+      if (tree.slug) revalidatePath(`/trees/${tree.slug}`);
+      revalidatePath('/categories');
+    } catch (err) {
+      console.warn('Revalidation warning:', err);
+    }
+
     return NextResponse.json({ success: true, data: tree });
   } catch (error) {
     console.error('Admin tree PATCH error:', error);

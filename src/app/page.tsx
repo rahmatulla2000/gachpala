@@ -12,7 +12,7 @@ import { getPublicStats } from '@/services/stats/stats.service';
 import { getFeaturedTrees, getRecentTrees } from '@/services/trees/tree.service';
 import { getCategories } from '@/services/categories/category.service';
 
-export const revalidate = 60; // Revalidate every 60 seconds
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const [stats, featuredTrees, categories, recentTrees] = await Promise.all([

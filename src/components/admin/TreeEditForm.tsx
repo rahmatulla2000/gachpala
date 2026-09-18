@@ -143,7 +143,8 @@ export function TreeEditForm({ tree, allCategories }: Props) {
       formData.append('file', file);
       formData.append('type', uploadType);
       formData.append('altText', form.englishName || form.banglaName || 'Tree Photo');
-      formData.append('isPrimary', String(uploadPrimary));
+      const isPrimaryToSet = uploadPrimary || images.length === 0;
+      formData.append('isPrimary', String(isPrimaryToSet));
 
       const res = await fetch(`/api/admin/trees/${tree.id}/images`, {
         method: 'POST',
@@ -156,7 +157,7 @@ export function TreeEditForm({ tree, allCategories }: Props) {
       }
 
       // Update local images list
-      if (uploadPrimary) {
+      if (data.data.isPrimary) {
         setImages((prev) => [
           data.data,
           ...prev.map((img) => ({ ...img, isPrimary: false })),
@@ -167,6 +168,7 @@ export function TreeEditForm({ tree, allCategories }: Props) {
 
       setImageMsg({ type: 'success', text: 'Photo uploaded successfully!' });
       if (fileInputRef.current) fileInputRef.current.value = '';
+      router.refresh();
     } catch (err) {
       setImageMsg({
         type: 'error',
@@ -199,6 +201,7 @@ export function TreeEditForm({ tree, allCategories }: Props) {
         }))
       );
       setImageMsg({ type: 'success', text: 'Primary image updated.' });
+      router.refresh();
     } catch (err) {
       setImageMsg({
         type: 'error',
@@ -224,6 +227,7 @@ export function TreeEditForm({ tree, allCategories }: Props) {
 
       setImages((prev) => prev.filter((img) => img.id !== imageId));
       setImageMsg({ type: 'success', text: 'Image removed.' });
+      router.refresh();
     } catch (err) {
       setImageMsg({
         type: 'error',
